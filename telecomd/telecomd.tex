@@ -1,0 +1,270 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{siunitx}   % For number formatting
+\geometry{margin=1in}
+
+\title{Technical Report : 4G Cellular Network Deployment Planning and Economic Analysis}
+\author{Ilias Bezzaz}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+As an engineering student, my project involves planning and dimensioning a 4G cellular network deployment at 2.6 GHz for both urban and rural zones. Key parameters include:
+
+\begin{itemize}
+    \item Urban area: 105.4 km², 1,750,000 inhabitants (10\% penetration → 175,000 users)
+    \item Rural area: 5,176 km², 17,500 inhabitants (10\% penetration → 1,750 users)
+    \item Traffic model: 10 minutes/user/hour = 0.1667 Erlang
+    \item Bandwidth options: 5/10/15/20 MHz (25/50/75/100 PRBs)
+    \item Quality targets: C/I = 1.14, Blocking probability = 2\%
+\end{itemize}
+
+\section{Maximum Tolerated Path-loss (Uplink \& Downlink)}
+
+\subsection*{Downlink Calculation (BS → UE)}
+\[
+\begin{aligned}
+PL_{DL} &= P_{BS} + G_{BS} - L_{cable} - L_{duplexer} + G_{div} - L_{LNA} - S_{UE} \\
+&= 46 + 17 - 3 - 2 + 5 - 2 - (-105) \\
+&= 166\,\text{dB}
+\end{aligned}
+\]
+
+\subsection*{Uplink Calculation (UE → BS)}
+\[
+\begin{aligned}
+PL_{UL} &= P_{UE} + G_{UE} - (G_{BS} - L_{cable} - L_{duplexer}) - S_{BS} \\
+&= 21 + 0 - (17 - 3 - 2) - (-120) \\
+&= 129\,\text{dB}
+\end{aligned}
+\]
+
+\section{Radio Coverage Radius Calculation}
+
+\subsection*{Propagation Models}
+\begin{itemize}
+    \item Urban: \( PL = 113 + 35\log_{10}(d) + 10\,\text{dB} \) (8dB shadowing + 2dB fading)
+    \item Rural: \( PL = 100 + 35\log_{10}(d) + 6\,\text{dB} \) (4dB shadowing + 2dB fading)
+\end{itemize}
+
+\subsection*{Effective Coverage Radius}
+\[
+d = 10^{\frac{PL - A - L_{env}}{35}}
+\]
+
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+Environment & Uplink Radius & Downlink Radius \\
+\midrule
+Urban & \( 10^{\frac{129-113-10}{35}} = 1.48\,\text{km} \) & \( 10^{\frac{166-113-10}{35}} = 16.93\,\text{km} \) \\
+Rural & \( 10^{\frac{129-100-6}{35}} = 4.54\,\text{km} \) & \( 10^{\frac{166-100-6}{35}} = 51.79\,\text{km} \) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Cell Dimensioning According to Bandwidth}
+
+\subsection*{Erlang-B Capacity Analysis}
+\begin{center}
+\begin{tabular}{lcccc}
+\toprule
+Bandwidth (MHz) & 5 & 10 & 15 & 20 \\
+\midrule
+PRBs/cell & 25 & 50 & 75 & 100 \\
+Capacity (Erlangs) & 17.51 & 35 & 52.5 & 70 \\
+Max users/cell & 105 & 210 & 315 & 420 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Required Cell Count}
+\begin{center}
+\begin{tabular}{lcccc}
+\toprule
+Area & \multicolumn{4}{c}{Number of Cells} \\
+ & 5MHz & 10MHz & 15MHz & 20MHz \\
+\midrule
+Urban & 1,667 & 834 & 556 & 417 \\
+Rural & 17 & 9 & 6 & 5 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Cell Radius vs Capacity}
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+Bandwidth & Urban Radius (km) & Rural Radius (km) \\
+\midrule
+5 MHz & 0.156 & 4.54 \\
+10 MHz & 0.236 & 4.54 \\
+15 MHz & 0.298 & 4.54 \\
+20 MHz & 0.349 & 4.54 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Optimized Transmission Power}
+
+\subsection*{Urban Cells (20MHz Case)}
+\[
+\begin{aligned}
+PL &= 113 + 35\log_{10}(0.349) + 10 \approx 96.02\,\text{dB} \\
+P_{tx} &= -105 + 96.02 - 17 + 3 + 2 = \textbf{-21 dBm}
+\end{aligned}
+\]
+
+\subsection*{Rural Cells}
+\[
+\begin{aligned}
+PL &= 100 + 35\log_{10}(4.54) + 6 = 129\,\text{dB} \\
+P_{tx} &= -105 + 129 - 17 + 3 + 2 = \textbf{12 dBm}
+\end{aligned}
+\]
+
+\section{Network Cost Analysis}
+
+\subsection*{Cost Formulas}
+\begin{itemize}
+    \item \textbf{CAPEX} = (Number of sites $\times$ 15 k€) + Frequency license + (Microwave links $\times$ 100 k€)
+    \item \textbf{OPEX/year} = Number of sites $\times$ 5 k€
+    \item \textbf{Revenue/year} = Number of subscribers $\times$ 20€ $\times$ 12 months
+\end{itemize}
+
+\subsection*{Cost Parameters}
+\begin{itemize}
+    \item 2.6 GHz license: 2500 k€ per 5MHz block (UL+DL)
+    \item 18 GHz microwave links: 100 k€ per connection
+    \item Site installation (CAPEX): 15 k€ per site
+    \item Site operation (OPEX): 5 k€ per site/year
+    \item Subscription fee: 20€/month per user
+\end{itemize}
+
+\subsection*{Urban Deployment Costs (k€) - Detailed Calculation}
+\begin{center}
+\begin{tabular}{lrrrr}
+\toprule
+Component & \multicolumn{4}{c}{Bandwidth} \\
+ & 5MHz & 10MHz & 15MHz & 20MHz \\
+\midrule
+License & 2,500 & 5,000 & 7,500 & 10,000 \\
+Sites (N×15k€) & 1,667×15=25,005 & 834×15=12,510 & 556×15=8,340 & 417×15=6,255 \\
+Microwave (N×100k€) & 1,667×0.1=166.7 & 834×0.1=83.4 & 556×0.1=55.6 & 417×0.1=41.7 \\
+\midrule
+\textbf{Total CAPEX} & 27,671.7 & 17,593.4 & 15,895.6 & 16,296.7 \\
+OPEX/year & 1,667×5=8,335 & 834×5=4,170 & 556×5=2,780 & 417×5=2,085 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Rural Deployment Costs (k€) - Detailed Calculation}
+\begin{center}
+\begin{tabular}{lrrrr}
+\toprule
+Component & \multicolumn{4}{c}{Bandwidth} \\
+ & 5MHz & 10MHz & 15MHz & 20MHz \\
+\midrule
+License & 2,500 & 5,000 & 7,500 & 10,000 \\
+Sites (N×15k€) & 17×15=255 & 9×15=135 & 6×15=90 & 5×15=75 \\
+Microwave (N×100k€) & 17×0.1=1.7 & 9×0.1=0.9 & 6×0.1=0.6 & 5×0.1=0.5 \\
+\midrule
+\textbf{Total CAPEX} & 2,756.7 & 5,135.9 & 7,590.6 & 10,075.5 \\
+OPEX/year & 17×5=85 & 9×5=45 & 6×5=30 & 5×5=25 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Network Cost Analysis}
+
+\subsection*{Cost Formulas}
+\begin{itemize}
+    \item $\text{CAPEX} = (\text{Number of sites} \times 15\,\text{k€}) + \text{License} + (\text{Microwave links} \times 100\,\text{k€})$
+    \item $\text{OPEX/year} = \text{Number of sites} \times 5\,\text{k€}$
+    \item $\text{Annual revenue} = \text{Subscribers} \times 20€ \times 12$
+\end{itemize}
+
+\subsection*{Cost Parameters}
+\begin{itemize}
+    \item 2.6 GHz license: 2\,500 k€ per 5 MHz block (UL+DL)
+    \item 18 GHz microwave links: 100 k€ per connection
+    \item Site installation: 15 k€ (CAPEX)
+    \item Site operation: 5 k€/year (OPEX)
+    \item Customer subscription: 20€/month
+\end{itemize}
+
+\subsection*{Urban Costs (k€) - Detailed Calculations}
+\begin{center}
+\begin{tabular}{@{}l *{4}{r}@{}}
+\toprule
+Component & \multicolumn{4}{c}{Bandwidth} \\
+\cmidrule(lr){2-5}
+ & 5 MHz & 10 MHz & 15 MHz & 20 MHz \\
+\midrule
+License & 2\,500 & 5\,000 & 7\,500 & 10\,000 \\
+Sites & 1\,667×15=25\,005 & 834×15=12\,510 & 556×15=8\,340 & 417×15=6\,255 \\
+Microwave & 1\,667×0.1=166.7 & 834×0.1=83.4 & 556×0.1=55.6 & 417×0.1=41.7 \\
+\midrule
+\textbf{Total CAPEX} & 27\,671.7 & 17\,593.4 & 15\,895.6 & 16\,296.7 \\
+OPEX/year & 1\,667×5=8\,335 & 834×5=4\,170 & 556×5=2\,780 & 417×5=2\,085 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Rural Costs (k€) - Detailed Calculations}
+\begin{center}
+\begin{tabular}{@{}l *{4}{r}@{}}
+\toprule
+Component & \multicolumn{4}{c}{Bandwidth} \\
+\cmidrule(lr){2-5}
+ & 5 MHz & 10 MHz & 15 MHz & 20 MHz \\
+\midrule
+License & 2\,500 & 5\,000 & 7\,500 & 10\,000 \\
+Sites & 17×15=255 & 9×15=135 & 6×15=90 & 5×15=75 \\
+Microwave & 17×0.1=1.7 & 9×0.1=0.9 & 6×0.1=0.6 & 5×0.1=0.5 \\
+\midrule
+\textbf{Total CAPEX} & 2\,756.7 & 5\,135.9 & 7\,590.6 & 10\,075.5 \\
+OPEX/year & 17×5=85 & 9×5=45 & 6×5=30 & 5×5=25 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Conclusion}
+
+Key technical and economic insights:
+
+\begin{itemize}
+    \item \textbf{Urban Deployment}:
+    \begin{itemize}
+        \item Cell radius: 156-349m (traffic-limited)
+        \item Optimal bandwidth: 20MHz (€1.01B profit)
+        \item BS power: -21dBm
+    \end{itemize}
+    
+    \item \textbf{Rural Deployment}:
+    \begin{itemize}
+        \item Cell radius: 4.54km (uplink-limited)
+        \item Only 5MHz viable (€2.7M profit)
+        \item BS power: 12dBm
+    \end{itemize}
+    
+    \item \textbf{Cross-cutting}:
+    \begin{itemize}
+        \item Frequency reuse pattern: 1
+        \item C/I ratio: 1.14 maintained
+        \item Microwave backhaul adds 0.5-2\% to CAPEX
+    \end{itemize}
+\end{itemize}
+
+This analysis demonstrates the critical need for environment-specific optimization in cellular network planning, balancing spectral efficiency with economic viability.
+
+\end{document}

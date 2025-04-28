@@ -1,0 +1,115 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\geometry{margin=2.5cm}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{IR.2406 - Network Security}
+\lhead{ASA Firewall Lab}
+\rfoot{\thepage}
+
+\titleformat{\section}{\large\bfseries}{\thesection.}{1em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection.}{1em}{}
+
+\title{\textbf{ASA Firewall Configuration Lab Report}\\
+\large IR.2406 – Network Security}
+\author{Ilias Bezzaz, Selim Ahmine, Elias Ait Khelifa\\
+ISEP}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Introduction}
+This document summarizes the results and analysis of our practical lab session dedicated to the configuration of the Cisco ASA 5505 firewall using CLI. This hands-on exercise is part of the IR.2406 – Network Security course. Our goal was to understand and apply core security configurations such as routing, NAT, DHCP, VLAN segmentation, access control lists, and remote management over SSH.
+
+\vspace{1em}
+The work was conducted by a group of three cybersecurity engineering students: Ilias Bezzaz, Selim Ahmine, and Elias Ait Khelifa.
+
+\section*{PART 2}
+
+\subsection*{What software version is this ASA running?}
+The ASA is running \textbf{Cisco Adaptive Security Appliance Software Version 8.4(2)}. This version supports modern security features such as object-based NAT, modular policy framework, and enhanced CLI syntax.
+
+\subsection*{What is the name of the system image file and from where was it loaded?}
+\begin{itemize}
+    \item \textbf{System image:} \texttt{asa842-k8.bin}
+    \item \textbf{Loaded from:} \texttt{disk0:/}
+\end{itemize}
+
+\subsection*{What version of ASDM is this ASA running?}
+The ASA runs \textbf{ASDM Version 6.4(5)}, providing a GUI alternative to CLI for ASA configuration and monitoring.
+
+\subsection*{How much RAM does this ASA have?}
+The ASA 5505 is equipped with \textbf{512 MB} of RAM, which allows it to handle stateful inspection, ASDM services, and NAT translations efficiently for a small network environment.
+
+\subsection*{How much flash memory does this ASA have?}
+The ASA has \textbf{128 MB} of internal ATA Compact Flash memory (\texttt{128573440 bytes}), used for storing system images, ASDM, and configuration files.
+
+\subsection*{How many Ethernet ports does this ASA have?}
+There are \textbf{8 Ethernet ports}, labeled from \texttt{Ethernet0/0} to \texttt{Ethernet0/7}. Ports E0/6 and E0/7 support Power over Ethernet (PoE).
+
+\subsection*{What type of license does this ASA have?}
+The device is running a \textbf{Base License}, which restricts some advanced features (such as high availability or multiple context mode).
+
+\subsection*{How many VLANs can be created with this license?}
+Up to \textbf{3 VLANs} can be configured simultaneously. This includes the inside, outside, and one optional DMZ interface. The third VLAN (DMZ) requires a \texttt{no forward} command to isolate it from one of the others.
+
+\subsection*{What is another name for \texttt{flash:}?}
+The alias \texttt{disk0:} is an alternative name for \texttt{flash:}.
+
+\section*{PART 4}
+
+\subsection*{STEP 1}
+
+\paragraph{a. Was the ping from ASA to R1 G0/0 successful?}
+No. The ASA had not yet been configured with a default route, so it had no knowledge of networks beyond its directly connected interfaces.
+
+\paragraph{b. Was the ping from ASA to R1 S0/0/0 successful?}
+No. As with the previous case, the ASA did not have a route to the 10.1.1.0/30 network. Without a proper routing table, the packet was dropped.
+
+\paragraph{e. Was the ping from ASA to R1 S0/0/0 successful after adding a default route?}
+Yes. Once the default route was added, the ASA was able to forward the packet to R1, which routed it towards its serial interface.
+
+\subsection*{STEP 2}
+
+\paragraph{f. Were pings from PC-B to R1 G0/0 successful?}
+No. At this point, NAT (specifically PAT) had not been configured yet. The ASA forwarded packets with unroutable private IP addresses (192.168.1.X), which were rejected by R1.
+
+\section*{PART 5}
+
+\paragraph{Were you able to configure the full DHCP pool from 192.168.1.5 to 192.168.1.100?}
+No. Due to Base License restrictions, the ASA only allows a DHCP pool of 32 addresses. We therefore reduced the range to \texttt{192.168.1.5 – 192.168.1.36}, which respects this limitation while allowing dynamic IP assignment to internal hosts.
+
+\section*{PART 6 - Reflection}
+
+\subsection*{1. How does the configuration of the ASA firewall differ from that of an ISR?}
+The ASA employs a security-centric architecture:
+\begin{itemize}
+    \item \textbf{Zone logic:} Interfaces are assigned \textit{security levels} (0–100) rather than belonging to IOS-style zones.
+    \item \textbf{Stateful inspection:} ASA implements MPF (Modular Policy Framework) to inspect traffic by protocol.
+    \item \textbf{NAT by objects:} The NAT configuration relies on logical network objects for clarity and scalability.
+    \item \textbf{Command set:} Although similar to IOS, ASA commands differ slightly and focus more on filtering and inspection than routing.
+\end{itemize}
+
+In contrast, an ISR uses traditional IOS commands, class-based QoS, and often integrates firewall rules via Zone-Based Firewall (ZBF).
+
+\subsection*{2. What does the ASA use to define address translation and what is the benefit?}
+ASA uses \textbf{network objects} and \textbf{object groups} to define NAT rules. This allows:
+\begin{itemize}
+    \item Centralized configuration of both the network and its translation rule.
+    \item Better readability and scalability of the NAT configuration.
+    \item Easier adaptation for static, dynamic, identity or twice NAT.
+\end{itemize}
+
+\subsection*{3. How does the ASA 5505 use logical and physical interfaces to manage security and how does this differ from other ASA models?}
+The ASA 5505 uses \textbf{VLAN interfaces} (Layer 3 logical) mapped to \textbf{Layer 2 physical ports}. Security policies, IP addressing, and NAT apply to VLANs, not to physical interfaces. In contrast, larger ASA models (e.g., 5510+) have routed physical interfaces, allowing direct IP assignment and zoning without VLAN abstraction. The ASA 5505 behaves more like a managed switch with firewall capabilities.
+
+\end{document}

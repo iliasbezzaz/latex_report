@@ -1,0 +1,281 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025/Arch Linux) (preloaded format=pdflatex 2025.3.17)  20 MAR 2025 22:55
+entering extended mode
+ restricted \write18 enabled.
+ file:line:error style messages enabled.
+ %&-line parsing enabled.
+**/home/ilias/rapport.tex
+(/home/ilias/rapport.tex
+LaTeX2e <2024-11-01> patch level 2
+L3 programming layer <2025-01-18>
+(/usr/share/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2024/06/29 v1.4n Standard LaTeX document class
+(/usr/share/texmf-dist/tex/latex/base/size10.clo
+File: size10.clo 2024/06/29 v1.4n Standard LaTeX file (size option)
+)
+\c@part=\count196
+\c@section=\count197
+\c@subsection=\count198
+\c@subsubsection=\count199
+\c@paragraph=\count266
+\c@subparagraph=\count267
+\c@figure=\count268
+\c@table=\count269
+\abovecaptionskip=\skip49
+\belowcaptionskip=\skip50
+\bibindent=\dimen141
+) (/usr/share/texmf-dist/tex/latex/listings/listings.sty (/usr/share/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
+\KV@toks@=\toks17
+)
+\lst@mode=\count270
+\lst@gtempboxa=\box52
+\lst@token=\toks18
+\lst@length=\count271
+\lst@currlwidth=\dimen142
+\lst@column=\count272
+\lst@pos=\count273
+\lst@lostspace=\dimen143
+\lst@width=\dimen144
+\lst@newlines=\count274
+\lst@lineno=\count275
+\lst@maxwidth=\dimen145
+ (/usr/share/texmf-dist/tex/latex/listings/lstpatch.sty
+File: lstpatch.sty 2024/09/23 1.10c (Carsten Heinz)
+) (/usr/share/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2024/09/23 1.10c (Carsten Heinz)
+\c@lstnumber=\count276
+\lst@skipnumbers=\count277
+\lst@framebox=\box53
+) (/usr/share/texmf-dist/tex/latex/listings/listings.cfg
+File: listings.cfg 2024/09/23 1.10c listings configuration
+))
+Package: listings 2024/09/23 1.10c (Carsten Heinz)
+ (/usr/share/texmf-dist/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2024/09/29 v3.02 LaTeX color extensions (UK)
+ (/usr/share/texmf-dist/tex/latex/graphics-cfg/color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package xcolor Info: Driver file: pdftex.def on input line 274.
+ (/usr/share/texmf-dist/tex/latex/graphics-def/pdftex.def
+File: pdftex.def 2024/04/13 v1.2c Graphics/color driver for pdftex
+) (/usr/share/texmf-dist/tex/latex/graphics/mathcolor.ltx)
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1349.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1353.
+Package xcolor Info: Model `RGB' extended on input line 1365.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1367.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1368.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1369.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1370.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1371.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1372.
+) (/usr/share/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
+ (/usr/share/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2024/08/06 v1.4g Standard LaTeX Graphics (DPC,SPQR)
+ (/usr/share/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2023/12/02 v1.11 sin cos tan (DPC)
+) (/usr/share/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 106.
+)
+\Gin@req@height=\dimen146
+\Gin@req@width=\dimen147
+) (/usr/share/texmf-dist/tex/latex/geometry/geometry.sty
+Package: geometry 2020/01/02 v5.9 Page Geometry
+ (/usr/share/texmf-dist/tex/generic/iftex/ifvtex.sty
+Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
+ (/usr/share/texmf-dist/tex/generic/iftex/iftex.sty
+Package: iftex 2024/12/12 v1.0g TeX engine tests
+))
+\Gm@cnth=\count278
+\Gm@cntv=\count279
+\c@Gm@tempcnt=\count280
+\Gm@bindingoffset=\dimen148
+\Gm@wd@mp=\dimen149
+\Gm@odd@mp=\dimen150
+\Gm@even@mp=\dimen151
+\Gm@layoutwidth=\dimen152
+\Gm@layoutheight=\dimen153
+\Gm@layouthoffset=\dimen154
+\Gm@layoutvoffset=\dimen155
+\Gm@dimlist=\toks19
+) (/usr/share/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
+File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count281
+\l__pdf_internal_box=\box54
+) (./rapport.aux)
+\openout1 = `rapport.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+\c@lstlisting=\count282
+ (/usr/share/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count283
+\scratchdimen=\dimen156
+\scratchbox=\box55
+\nofMPsegments=\count284
+\nofMParguments=\count285
+\everyMPshowfont=\toks20
+\MPscratchCnt=\count286
+\MPscratchDim=\dimen157
+\MPnumerator=\count287
+\makeMPintoPDFobject=\count288
+\everyMPtoPDFconversion=\toks21
+) (/usr/share/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
+ (/usr/share/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
+))
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: <default>
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(72.26999pt, 469.75502pt, 72.26999pt)
+* v-part:(T,H,B)=(72.26999pt, 650.43001pt, 72.26999pt)
+* \paperwidth=614.295pt
+* \paperheight=794.96999pt
+* \textwidth=469.75502pt
+* \textheight=650.43001pt
+* \oddsidemargin=0.0pt
+* \evensidemargin=0.0pt
+* \topmargin=-37.0pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=10.0pt
+* \footskip=30.0pt
+* \marginparwidth=65.0pt
+* \marginparsep=11.0pt
+* \columnsep=10.0pt
+* \skip\footins=9.0pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 20.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 20.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 20.
+
+Overfull \hbox (87.32678pt too wide) in paragraph at lines 23--24
+\OT1/cmr/m/n/10 The pur-pose of this as-sign-ment is to per-form an SQL in-jec-tion at-tack on a demon-stra-tion web-site, \OT1/cmtt/m/n/10 http://testphp.vulnweb.com\OT1/cmr/m/n/10 ,
+ []
+
+<Documents/tp3php/3.png, id=1, 454.9725pt x 114.975pt>
+File: Documents/tp3php/3.png Graphic file (type png)
+<use Documents/tp3php/3.png>
+Package pdftex.def Info: Documents/tp3php/3.png  used on input line 41.
+(pdftex.def)             Requested size: 469.75502pt x 118.70978pt.
+
+Overfull \hbox (15.0pt too wide) in paragraph at lines 41--42
+[][] 
+ []
+
+
+
+[1
+
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./Documents/tp3php/3.png>]
+<Documents/tp3php/4.png, id=13, 895.09406pt x 612.78937pt>
+File: Documents/tp3php/4.png Graphic file (type png)
+<use Documents/tp3php/4.png>
+Package pdftex.def Info: Documents/tp3php/4.png  used on input line 53.
+(pdftex.def)             Requested size: 375.80544pt x 257.28563pt.
+<Documents/tp3php/5.png, id=15, 892.08281pt x 601.4972pt>
+File: Documents/tp3php/5.png Graphic file (type png)
+<use Documents/tp3php/5.png>
+Package pdftex.def Info: Documents/tp3php/5.png  used on input line 62.
+(pdftex.def)             Requested size: 375.80544pt x 253.38889pt.
+
+
+[2 <./Documents/tp3php/4.png>]
+<Documents/tp3php/6.png, id=20, 893.58844pt x 619.56468pt>
+File: Documents/tp3php/6.png Graphic file (type png)
+<use Documents/tp3php/6.png>
+Package pdftex.def Info: Documents/tp3php/6.png  used on input line 71.
+(pdftex.def)             Requested size: 375.80544pt x 260.56517pt.
+
+
+[3 <./Documents/tp3php/5.png> <./Documents/tp3php/6.png>]
+<Documents/tp3php/7.png, id=26, 897.3525pt x 569.12625pt>
+File: Documents/tp3php/7.png Graphic file (type png)
+<use Documents/tp3php/7.png>
+Package pdftex.def Info: Documents/tp3php/7.png  used on input line 80.
+(pdftex.def)             Requested size: 375.80544pt x 238.34534pt.
+<Documents/tp3php/8.png, id=27, 708.84825pt x 519.74174pt>
+File: Documents/tp3php/8.png Graphic file (type png)
+<use Documents/tp3php/8.png>
+Package pdftex.def Info: Documents/tp3php/8.png  used on input line 82.
+(pdftex.def)             Requested size: 375.80544pt x 275.54904pt.
+<Documents/tp3php/9.png, id=28, 454.9725pt x 144.2115pt>
+File: Documents/tp3php/9.png Graphic file (type png)
+<use Documents/tp3php/9.png>
+Package pdftex.def Info: Documents/tp3php/9.png  used on input line 86.
+(pdftex.def)             Requested size: 469.75502pt x 148.89597pt.
+
+Overfull \hbox (15.0pt too wide) in paragraph at lines 86--87
+[][] 
+ []
+
+
+
+[4 <./Documents/tp3php/7.png> <./Documents/tp3php/8.png>]
+<Documents/tp3php/10.png, id=34, 454.9725pt x 217.467pt>
+File: Documents/tp3php/10.png Graphic file (type png)
+<use Documents/tp3php/10.png>
+Package pdftex.def Info: Documents/tp3php/10.png  used on input line 90.
+(pdftex.def)             Requested size: 469.75502pt x 224.53105pt.
+
+Overfull \hbox (15.0pt too wide) in paragraph at lines 90--91
+[][] 
+ []
+
+
+
+[5 <./Documents/tp3php/9.png> <./Documents/tp3php/10.png>] (./rapport.aux)
+ ***********
+LaTeX2e <2024-11-01> patch level 2
+L3 programming layer <2025-01-18>
+ ***********
+ ) 
+Here is how much of TeX's memory you used:
+ 4048 strings out of 475171
+ 59559 string characters out of 5767103
+ 507959 words of memory out of 5000000
+ 27048 multiletter control sequences out of 15000+600000
+ 562813 words of font info for 50 fonts, out of 8000000 for 9000
+ 14 hyphenation exceptions out of 8191
+ 57i,6n,65p,815b,1056s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb>
+Output written on rapport.pdf (5 pages, 1710451 bytes).
+PDF statistics:
+ 64 PDF objects out of 1000 (max. 8388607)
+ 31 compressed objects within 1 object stream
+ 0 named destinations out of 1000 (max. 500000)
+ 41 words of extra memory for PDF output out of 10000 (max. 10000000)
+

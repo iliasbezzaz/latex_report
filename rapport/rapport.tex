@@ -1,0 +1,98 @@
+\documentclass{article}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry}
+
+\lstset{
+  basicstyle=\ttfamily\footnotesize,
+  breaklines=true,
+  backgroundcolor=\color{gray!10},
+  frame=single
+}
+
+\title{SQL Injection Attack Report}
+\author{Ilias Bezzaz, Rana Klai, Karl-Samuel Mounga and Vivien Nodier}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+The purpose of this assignment is to perform an SQL injection attack on a demonstration website, \texttt{http://testphp.vulnweb.com}, using automated penetration testing tools, particularly SQLMap. The website is intentionally vulnerable and is designed for cybersecurity educational purposes, allowing practical demonstrations of web vulnerabilities.
+
+\section{Environment Setup}
+For the execution of our penetration tests, we utilized a virtual machine running Kali Linux. We began by installing SQLMap, a powerful automated tool specifically designed for detecting and exploiting SQL injection vulnerabilities. The installation command used was:
+\begin{lstlisting}
+sudo apt update && sudo apt install -y sqlmap
+\end{lstlisting}
+
+\section{Reconnaissance and Initial Testing}
+Initially, we explored the target website manually by analyzing URL parameters. We browsed through the site's pages and identified URLs containing numerical parameters such as \texttt{cat=1} and \texttt{artist=2}. To test for SQL injection vulnerabilities, we inserted special characters, particularly single quotes (\texttt{'}), into these URL parameters. 
+
+When we tested the URL:
+\begin{lstlisting}
+http://testphp.vulnweb.com/listproducts.php?cat=1'
+\end{lstlisting}
+
+the website returned an explicit SQL syntax error message. This error confirmed that the parameter \texttt{cat} was vulnerable to SQL injection, as shown clearly by the image below:
+
+\includegraphics[width=\textwidth]{Documents/tp3php/3.png}
+
+\newpage
+\section{Detailed Exploitation Using SQLMap}
+
+In the first phase of the SQL injection exploitation, we enumerated available databases using SQLMap with the following command:
+\begin{lstlisting}
+sqlmap -u "http://testphp.vulnweb.com/listproducts.php?cat=1" --dbs --batch
+\end{lstlisting}
+
+This allowed us to identify two databases named \texttt{acuart} and \texttt{information\_schema}, with \texttt{acuart} being particularly interesting due to the likelihood of containing user-related data.
+
+\includegraphics[width=0.8\textwidth]{Documents/tp3php/4.png}
+
+Next, we enumerated tables within the database \texttt{acuart}. We executed the following SQLMap command:
+\begin{lstlisting}
+sqlmap -u "http://testphp.vulnweb.com/listproducts.php?cat=1" -D acuart --tables --batch
+\end{lstlisting}
+
+Several tables were discovered, including \texttt{users}, \texttt{products}, \texttt{artists}, and \texttt{guestbook}. Among these, the \texttt{users} table appeared most relevant, as it likely contained sensitive login credentials.
+
+\includegraphics[width=0.8\textwidth]{Documents/tp3php/5.png}
+
+Following this discovery, we enumerated the columns within the \texttt{users} table to identify specific data fields. The command executed was:
+\begin{lstlisting}
+sqlmap -u "http://testphp.vulnweb.com/listproducts.php?cat=1" -D acuart -T users --columns --batch
+\end{lstlisting}
+
+This step revealed important columns such as \texttt{uname} (username) and \texttt{pass} (password), critical for authentication and further exploitation.
+
+\includegraphics[width=0.8\textwidth]{Documents/tp3php/6.png}
+
+To proceed further, we extracted actual user credentials from the \texttt{users} table by targeting these columns directly. We ran:
+\begin{lstlisting}
+sqlmap -u "http://testphp.vulnweb.com/listproducts.php?cat=1" -D acuart -T users -C uname,pass --dump
+\end{lstlisting}
+
+This resulted in obtaining a username and password combination, both being \texttt{test}.
+
+\includegraphics[width=0.8\textwidth]{Documents/tp3php/7.png}
+
+\includegraphics[width=0.8\textwidth]{Documents/tp3php/8.png}
+
+With these extracted credentials, we successfully authenticated ourselves on the targeted vulnerable web application, conclusively proving the effectiveness of the SQL injection vulnerability.
+
+\includegraphics[width=\textwidth]{Documents/tp3php/9.png}
+
+Upon successful login, we accessed and modified sensitive user information, including credit card details, email addresses, and physical addresses, highlighting the severe consequences of an SQL injection attack.
+
+\includegraphics[width=\textwidth]{Documents/tp3php/10.png}
+
+\section{Recommendations for Protection}
+To mitigate risks associated with SQL injection vulnerabilities, several protective measures should be implemented. Using prepared statements with parameterized queries ensures that user inputs are treated strictly as data, never executed directly as part of an SQL statement. Rigorous input validation and sanitization must also be enforced, rejecting malicious inputs at the earliest opportunity. Additionally, detailed error messages from the database must be suppressed to prevent attackers from gaining useful information. Deploying a Web Application Firewall (WAF) can significantly reduce the risk of injection attacks by monitoring and filtering traffic. Regular penetration tests and vulnerability assessments are also essential for maintaining robust security.
+
+\section{Conclusion}
+Through this practical exercise, we have illustrated the critical risks posed by SQL injection vulnerabilities. The scenario demonstrates clearly how attackers can leverage these weaknesses to gain unauthorized access and modify sensitive data. Implementing rigorous security practices, comprehensive testing, and continuous awareness is essential to protect web applications effectively against such vulnerabilities.
+
+\end{document}

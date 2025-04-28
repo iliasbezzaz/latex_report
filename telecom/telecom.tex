@@ -1,0 +1,407 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{textcomp} % For special symbols like €
+\usepackage{newunicodechar} % For handling UTF-8 characters
+\usepackage{amsmath}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{siunitx}   % For number formatting
+\usepackage{amssymb}   % For symbols like \checkmark
+\geometry{margin=1in}
+
+\title{Technical Report : 4G Cellular Network Deployment Planning and Economic Analysis}
+\author{Ilias Bezzaz}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+As an engineering student, my project involves planning and dimensioning a 4G cellular network deployment at a frequency of 2600 MHz (2.6 GHz). The goal is to cover both urban and rural zones efficiently. 
+The project's detailed specifications include:
+
+\begin{itemize}
+    \item Calculating the maximum tolerated path-loss (uplink/downlink)
+    \item Determining radio coverage radius
+    \item Precise cell dimensioning considering bandwidths of 5 MHz, 10 MHz, 15 MHz, and 20 MHz
+    \item Optimizing transmission power
+    \item Estimating network deployment costs and performing an economic profitability analysis
+\end{itemize}
+
+Key parameters include:
+
+\begin{itemize}
+    \item Urban area: 105.4 km², 1,750,000 inhabitants (10\% penetration → 175,000 users)
+    \item Rural area: 5,176 km², 17,500 inhabitants (10\% penetration → 1,750 users)
+    \item Traffic model: 10 minutes/user/hour = 0.1667 Erlang
+    \item Bandwidth options: 5/10/15/20 MHz (25/50/75/100 PRBs)
+    \item Quality targets: C/I = 1.14, Blocking probability = 2\%
+\end{itemize}
+
+
+\section{Maximum Tolerated Path-loss (Uplink \& Downlink)}
+
+The first step in planning a cellular network consists in calculating the maximum tolerated path-loss for both the downlink (from the base station to the mobile device) and the uplink (from the mobile device to the base station). This value represents the maximum signal attenuation that can be supported while still ensuring a functional communication link. It is a critical element in determining the maximum coverage distance of a cell.
+
+\subsection*{Downlink Calculation (Base Station \textrightarrow{} Mobile)}
+
+\begin{itemize}
+    \item $P_{BS} = 46\,\text{dBm}$
+    \item $G_{BS} = 17\,\text{dB}$
+    \item $L_{cable} = 3\,\text{dB}$
+    \item $L_{duplexer} = 2\,\text{dB}$
+    \item $G_{div} = 5\,\text{dB}$
+    \item $L_{LNA} = 2\,\text{dB}$
+    \item $S_{mobile} = -105\,\text{dBm}$
+\end{itemize}
+
+\[PL_{DL} = P_{BS} + G_{BS} - L_{cable} - L_{duplexer} + G_{div} - L_{LNA} - S_{mobile}\]
+\[PL_{DL} = 46 + 17 - 3 - 2 + 5 - 2 - (-105) = 166\,\text{dB}\]
+
+\textbf{Maximum tolerated downlink path-loss: 166 dB}
+
+\subsection*{Uplink Calculation (Mobile \textrightarrow{} Base Station)}
+
+\begin{itemize}
+    \item $P_{mobile} = 21\,\text{dBm}$
+    \item $S_{BS} = -120\,\text{dBm}$
+\end{itemize}
+
+\[PL_{UL} = P_{mobile} + G_{mobile} - (G_{BS} - L_{cable} - L_{duplexer}) - S_{BS}\]
+\[PL_{UL} = 21 + 0 - (17 - 3 - 2) - (-120) = 129\,\text{dB}\]
+
+\textbf{Maximum tolerated uplink path-loss: 129 dB}
+
+\bigskip
+
+The link budget reveals a clear asymmetry between downlink and uplink performance. In the downlink direction, the high transmission power of the base station combined with its elevated antenna gain allows for significant signal attenuation, with a maximum tolerated path-loss of 166 dB. Conversely, the uplink is limited by the significantly lower power of mobile devices, resulting in a maximum tolerated path-loss of only 129 dB.
+
+This difference of 25 dB has major implications in terms of radio coverage. While the downlink signal could theoretically reach farther distances, real-world coverage is ultimately determined by the uplink, since both directions must function correctly for communication to be established. A mobile device located too far from the base station may receive data, but if it cannot transmit back due to power constraints, the connection fails.
+
+For this reason, the uplink constraint becomes the determining factor when calculating the cell radius in practical deployments. The next steps in the project will be based on this more restrictive path-loss value of 129 dB.
+
+\section{Radio Coverage Radius Calculation}
+
+Once the maximum tolerated path-loss has been determined, the next step is to calculate the maximum theoretical coverage radius of a cell. This is done using propagation models adapted to different environments (urban and rural), which describe how radio signals attenuate with distance under various conditions. The radius defines the maximum distance at which the mobile terminal can maintain a reliable connection with the base station, assuming free space or realistic propagation loss.
+
+\subsection*{Propagation Models}
+\begin{itemize}
+    \item Urban: \( PL = 113 + 35\log_{10}(d) + 10\,\text{dB} \) (8dB shadowing + 2dB fading)
+    \item Rural: \( PL = 100 + 35\log_{10}(d) + 6\,\text{dB} \) (4dB shadowing + 2dB fading)
+\end{itemize}
+
+\subsection*{Effective Coverage Radius}
+\[
+d = 10^{\frac{PL - A - L_{env}}{35}}
+\]
+
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+Environment & Uplink Radius & Downlink Radius \\
+\midrule
+Urban & \( 10^{\frac{129-113-10}{35}} = 1.48\,\text{km} \) & \( 10^{\frac{166-113-10}{35}} = 16.93\,\text{km} \) \\
+Rural & \( 10^{\frac{129-100-6}{35}} = 4.54\,\text{km} \) & \( 10^{\frac{166-100-6}{35}} = 51.79\,\text{km} \) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Effective urban coverage radius: 1.48 km (uplink-limited)}
+
+\textbf{Effective rural coverage radius: 4.54 km (uplink-limited)}
+
+\bigskip
+
+The radio coverage analysis demonstrates that uplink performance is once again the limiting factor, regardless of the environment. While downlink signals could theoretically cover distances of up to 17 km in urban areas and more than 50 km in rural regions, the uplink only allows 1.48 km and 4.54 km, respectively. This stems from the limited transmission power of mobile devices.
+
+In urban environments, the situation is even more constrained due to building density, signal reflections, and other interference sources. As such, the maximum practical radius for urban cells is just over 1.48 km, and for rural areas, 4.54 km becomes the operational limit. These values will serve as upper bounds in subsequent cell dimensioning and deployment calculations.
+
+\section{Cell Dimensioning According to Bandwidth}
+
+After determining the maximum coverage radius, the next step is to dimension the cells based on user traffic demand and available bandwidth. This is crucial to ensure that each cell can handle the volume of simultaneous users without congestion. To do this, we rely on the Erlang B model which estimates the number of users that can be served per cell under a specific blocking probability.
+
+\bigskip
+
+Each user: $\frac{10}{60} = 0.1667\,\text{Erlang}$
+
+\subsection*{Erlang-B Capacity Analysis}
+\begin{table}[h]
+\centering
+\begin{tabular}{lccc}
+\toprule
+Bandwidth & Resources & Max Erlangs & Max Users \\
+\midrule
+5 MHz & 25 & 17.51 & 105 \\
+10 MHz & 50 & 35 & 210 \\
+15 MHz & 75 & 52.5 & 315 \\
+20 MHz & 100 & 70 & 420 \\
+\bottomrule
+\end{tabular}
+\caption{Erlang Capacity for Different Bandwidths}
+\label{tab:erlang-capacity}
+\end{table}
+
+\subsection*{Required Cell Count}
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+Bandwidth & Urban Cells & Rural Cells \\
+\midrule
+5 MHz & 1667 & 17 \\
+10 MHz & 834 & 9 \\
+15 MHz & 556 & 6 \\
+20 MHz & 417 & 5 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Cell Radius vs Capacity}
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+Bandwidth & Urban Radius (km) & Rural Radius (km) \\
+\midrule
+5 MHz & 0.156 & 4.54 \\
+10 MHz & 0.236 & 4.54 \\
+15 MHz & 0.298 & 4.54 \\
+20 MHz & 0.349 & 4.54 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Urban cells are limited by traffic demand, not radio range. In rural settings, the uplink limit prevents scaling coverage beyond 4.54 km, even with higher bandwidth.
+
+\bigskip
+
+In urban areas, the required number of cells is very high due to the concentration of users and their aggregated traffic. This results in extremely small cell radius—ranging from 156 meters to 349 meters depending on the bandwidth. These values are well below the 1.48 km uplink coverage limit, confirming that urban cell size is primarily limited by traffic demand, not radio propagation.
+
+In rural areas, the opposite is true. The theoretical radius exceed the 10 km limit imposed by uplink constraints as early as the 10 MHz bandwidth. Hence, even though higher bandwidth allows more users per cell, the radio limitation (uplink) prevents increasing the cell size accordingly. This highlights the importance of uplink considerations in sparsely populated regions.
+
+\section{Cell Radius Determination Methodology}
+\label{sec:radius-method}
+
+\subsection*{Urban Cell Radius: Traffic-Driven Approach}
+
+The urban cell radius is constrained by user density and Erlang capacity through:
+
+\begin{enumerate}
+    \item \textbf{User density calculation}:
+    \[
+    \rho_{\text{urban}} = \frac{N_{\text{users}}}{\text{Area}_{\text{urban}}} = \frac{175,\!000}{105} \approx 1,\!666\ \text{users/km}^2
+    \]
+    
+    \item \textbf{Cell capacity relationship}:
+    \[
+    N_{\text{cells}} = \frac{\rho_{\text{urban}} \times \text{Area}_{\text{urban}}}{\text{Users/Cell}(B)} 
+    \]
+    Where $\text{Users/Cell}(B)$ comes from Table~\ref{tab:erlang-capacity}.
+    
+    \item \textbf{Radius derivation}:
+    \[
+    R_B = \sqrt{\frac{\text{Area}_{\text{urban}}}{\pi \times N_{\text{cells}}(B)}}
+    \]
+\end{enumerate}
+
+\textbf{Example for 20 MHz}:
+\[
+R_{20} = \sqrt{\frac{105}{\pi \times 417}} \approx 0.349\ \text{km} \quad \text{(matches previous results)}
+\]
+
+\subsection*{Rural Cell Radius: Propagation-Limited Calculation}
+
+The rural radius is determined by uplink power constraints through:
+
+\begin{align*}
+PL &= 100 + 35\log_{10}(d) + 6 \leq 129\ \text{dB} \\
+\log_{10}(d) &= \frac{129 - 100 - 6}{35} = 0.657 \\
+d &= 10^{0.657} \approx 4.54\ \text{km}
+\end{align*}
+
+\subsection*{Constraint Validation}
+
+\subsubsection*{Urban Capacity Verification}
+For each bandwidth $B$, verify:
+\[
+\frac{\rho_{\text{urban}}}{\text{Cell density}} \leq \text{Users/Cell}(B)
+\]
+\textbf{20 MHz example}:
+\[
+\frac{1,\!666}{\frac{417}{105}} \approx 420\ \text{users/cell} \leq 420\ \checkmark
+\]
+
+\subsubsection*{Rural Coverage Verification}
+Confirm full path loss compatibility:
+\[
+PL(4.54\ \text{km}) = 100 + 35\log_{10}(4.54) + 6 = 129\ \text{dB} \leq PL_{\text{max}}\ \checkmark
+\]
+
+\begin{table}[h]
+\centering
+\caption{Key Radius Determination Parameters}
+\label{tab:radius-params}
+\begin{tabular}{lcc}
+\toprule
+Parameter & Urban & Rural \\
+\midrule
+User Density (users/km²) & 1,666 & 0.34 \\
+Max Theoretical Radius (km) & 1.48 & 51.79 \\
+Practical Radius (km) & 0.16-0.35 & 4.54 \\
+Constraint Factor & 4.2-9.3 & 11.4 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Where constraint factor = \(\frac{\text{Theoretical Radius}}{\text{Practical Radius}}\)
+
+\section{Optimized Transmission Power}
+
+With the effective cell radius now established for both urban and rural environments, it is possible to optimize the transmission power required at the base station. This ensures that the signal reaches the edge of the coverage area without excessive energy consumption.
+
+\subsection*{Urban (0.349 km)}
+
+\[ PL = 113 + 35\log_{10}(0.349) + 10 \approx 107\,\text{dB} \]
+\[ P_{tx} = -105 + 107 - 17 + 3 + 2 = \textbf{-10 dBm} \]
+
+\subsection*{Rural (4.54 km)}
+
+\[ PL = 100 + 35\log_{10}(4.54) + 6 \approx 129\,\text{dB} \]
+\[ P_{tx} = -105 + 129 - 17 + 3 + 2 = \textbf{12 dBm} \]
+
+\bigskip
+
+In urban areas, the extremely small cell sizes lead to very low required transmission powers. For a radius of 349 meters, only \textbf{-10 dBm} is needed. This suggests that transmitters must be deliberately underpowered to avoid over-provisioning and interference.
+
+In rural zones, the larger coverage area requires significantly more power—around \textbf{12 dBm}—to maintain signal strength up to the 4.54 km radius. This value remains within standard operating parameters for macro base stations.
+
+\section{Network Cost Analysis}
+
+\subsection*{Cost Formulas}
+\begin{itemize}
+    \item $\text{CAPEX} = (\text{Number of sites} \times 15\,\text{k€}) + \text{License} + (\text{Microwave links} \times 100\,\text{k€})$
+    \item $\text{OPEX/year} = \text{Number of sites} \times 5\,\text{k€}$
+    \item $\text{Annual revenue} = \text{Subscribers} \times 20€ \times 12$
+\end{itemize}
+
+\subsection*{Cost Parameters}
+\begin{itemize}
+    \item 2.6 GHz license: 2\,500 k€ per 5 MHz block (UL+DL)
+    \item 18 GHz microwave links: 100 k€ per connection
+    \item Site installation: 15 k€ (CAPEX)
+    \item Site operation: 5 k€/year (OPEX)
+    \item Customer subscription: 20€/month
+\end{itemize}
+
+\subsection*{Urban Costs (k€) - Detailed Calculations}
+\begin{center}
+\begin{tabular}{@{}l *{4}{r}@{}}
+\toprule
+Component & \multicolumn{4}{c}{Bandwidth} \\
+\cmidrule(lr){2-5}
+ & 5 MHz & 10 MHz & 15 MHz & 20 MHz \\
+\midrule
+License & 2\,500 & 5\,000 & 7\,500 & 10\,000 \\
+Sites & 1\,667×15=25\,005 & 834×15=12\,510 & 556×15=8\,340 & 417×15=6\,255 \\
+Microwave & 1\,667×100=166\,700 & 834×100=83\,400 & 556×100=55\,600 & 417×100=41\,700 \\
+\midrule
+\textbf{Total CAPEX} & 194\,205 & 100\,910 & 71\,440 & 57\,955 \\
+OPEX/year & 1\,667×5=8\,335 & 834×5=4\,170 & 556×5=2\,780 & 417×5=2\,085 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Rural Costs (k€) - Detailed Calculations}
+\begin{center}
+\begin{tabular}{@{}l *{4}{r}@{}}
+\toprule
+Component & \multicolumn{4}{c}{Bandwidth} \\
+\cmidrule(lr){2-5}
+ & 5 MHz & 10 MHz & 15 MHz & 20 MHz \\
+\midrule
+License & 2\,500 & 5\,000 & 7\,500 & 10\,000 \\
+Sites & 17×15=255 & 9×15=135 & 6×15=90 & 5×15=75 \\
+Microwave & 17×100=1\,700 & 9×100=900 & 6×100=600 & 5×100=500 \\
+\midrule
+\textbf{Total CAPEX} & 4\,455 & 6\,035 & 8\,190 & 10\,575 \\
+OPEX/year & 17×5=85 & 9×5=45 & 6×5=30 & 5×5=25 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Economic Profitability Analysis}
+
+\subsection*{Revenue Calculation}
+\[
+\begin{aligned}
+\text{Urban Annual Revenue} &= 175,\!000 \text{ subscribers} \times 20€ \times 12 = 42,\!000\,\text{k€} \\
+\text{Rural Annual Revenue} &= 1,\!750 \text{ subscribers} \times 20€ \times 12 = 420\,\text{k€} 
+\end{aligned}
+\]
+
+\subsection*{10-Year Financial Projections}
+\begin{center}
+\begin{tabular}{@{}l r r r@{}}
+\toprule
+\textbf{Scenario} & \textbf{Revenue (k€)} & \textbf{Total Costs (k€)} & \textbf{Net Profit (k€)} \\
+\midrule
+Urban 20MHz & 420,\!000 & \(57,\!955 + (2,\!085 \times 10) = 78,\!805\) & 341,\!195 \\
+Rural 5MHz & 4,\!200 & \(4,\!455 + (85 \times 10) = 5,\!305\) & -1,\!105 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Profitability Comparison by Bandwidth}
+\begin{center}
+\begin{tabular}{@{}l r r@{}}
+\toprule
+\textbf{Bandwidth} & \textbf{Urban Profit (k€)} & \textbf{Rural Profit (k€)} \\
+\midrule
+5 MHz & 420,\!000 - (194,\!205 + 83,\!350) = 142,\!445 & 4,\!200 - 5,\!305 = -1,\!105 \\
+10 MHz & 420,\!000 - (100,\!910 + 41,\!700) = 277,\!390 & 4,\!200 - 6,\!035 = -1,\!835 \\
+15 MHz & 420,\!000 - (71,\!440 + 27,\!800) = 320,\!760 & 4,\!200 - 8,\!190 = -3,\!990 \\
+20 MHz & 420,\!000 - (57,\!955 + 20,\!850) = 341,\!195 & 4,\!200 - 10,\!575 = -6,\!375 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Key Observations}
+\begin{itemize}
+\item \textbf{Urban Areas} show strong profitability across all bandwidths with:
+\begin{itemize}
+\item Best ROI at 20MHz (€341.2M profit)
+\item Minimum 33.9\% profit margin at 5MHz
+\end{itemize}
+
+\item \textbf{Rural Areas} are unviable in all cases:
+\begin{itemize}
+\item Worst loss at 20MHz (-€6.38M)
+\item "Best" loss at 5MHz (-€1.11M)
+\end{itemize}
+
+\item Microwave link costs account for:
+\begin{itemize}
+\item 38.2-72.0\% of urban CAPEX
+\item 38.1-47.3\% of rural CAPEX
+\end{itemize}
+\end{itemize}
+
+
+
+\section{Conclusion}
+
+This project highlights the fundamental challenges and trade-offs in modern cellular network planning. Key insights emerge from the analysis:
+
+\begin{itemize}
+\item Urban and rural environments demand fundamentally different deployment strategies due to contrasting user density and propagation conditions
+\item Uplink limitations play a critical role in practical network design, often overriding theoretical downlink capabilities
+\item Bandwidth selection creates complex compromises between capacity (urban) and coverage (rural)
+\item Economic viability remains challenging for low-density areas despite technical feasibility
+\end{itemize}
+
+\bigskip
+The results demonstrate that network deployment requires careful balancing of technical constraints (propagation, device capabilities), user demand patterns and financial sustainability
+
+\end{document}
